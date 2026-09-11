@@ -19,6 +19,10 @@ ApplicationWindow {
             "value": "Hot"
         },
         {
+            "text": qsTr("Scaled"),
+            "value": "Scaled",
+        },
+        {
             "text": qsTr("Active"),
             "value": "Active"
         },
