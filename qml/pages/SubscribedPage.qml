@@ -232,22 +232,41 @@ Page {
                 width: parent.width - 2 * Theme.horizontalPageMargin - (thumbnail.visible ? thumbnail.width + Theme.paddingMedium : 0)
                 spacing: Theme.paddingSmall
 
-                Row {
+                Item {
+                    id: titleRow
+
                     width: parent.width
-                    spacing: Theme.paddingSmall
+                    height: titleLabel.height
 
-                    Image {
-                        visible: post.featured_community
-                        source: "image://theme/icon-s-high-importance"
-                    }
+                    Row {
+                        id: statusIcons
 
-                    Image {
-                        visible: post.locked
-                        source: "image://theme/icon-s-secure"
+                        spacing: Theme.paddingSmall
+                        anchors {
+                            left: parent.left
+                            verticalCenter: parent.verticalCenter
+                        }
+
+                        Image {
+                            visible: post.featured_community
+                            source: "image://theme/icon-s-high-importance"
+                        }
+
+                        Image {
+                            visible: post.locked
+                            source: "image://theme/icon-s-secure"
+                        }
                     }
 
                     Label {
-                        width: parent.width - (post.featured_community ? (Theme.iconSizeSmall + Theme.paddingSmall) : 0) - (post.locked ? (Theme.iconSizeSmall + Theme.paddingSmall) : 0)
+                        id: titleLabel
+
+                        anchors {
+                            left: statusIcons.right
+                            leftMargin: statusIcons.width > 0 ? Theme.paddingSmall : 0
+                            right: parent.right
+                            top: parent.top
+                        }
                         text: post.name || ""
                         font.pixelSize: Theme.fontSizeSmall
                         wrapMode: Text.Wrap
