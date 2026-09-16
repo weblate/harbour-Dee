@@ -250,22 +250,6 @@ Page {
                     }
                 }
 
-                Label {
-                    visible: post.url ? (post.url.length > 0 && !/\s*$/.test(post.url)) : false
-                    text: {
-                        try {
-                            var u = new URL(post.url);
-                            return u.hostname;
-                        } catch (e) {
-                            return post.url || "";
-                        }
-                    }
-                    font.pixelSize: Theme.fontSizeExtraSmall
-                    color: Theme.secondaryHighlightColor
-                    truncationMode: TruncationMode.Fade
-                    width: parent.width
-                }
-
                 Item {
                     id: fullMediaBox
                     visible: AppSettings.fullSizeMediaEnabled && !!post.thumbnail_url
