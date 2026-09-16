@@ -25,7 +25,7 @@
     </message>
     <message>
         <source>subscribers</source>
-        <translation type="unfinished"></translation>
+        <translation>seuraajat</translation>
     </message>
     <message>
         <source>posts</source>
@@ -63,7 +63,7 @@
     </message>
     <message>
         <source>Controversial</source>
-        <translation type="unfinished"></translation>
+        <translation>Kiistanalainen</translation>
     </message>
     <message>
         <source>New</source>
@@ -119,7 +119,7 @@
     </message>
     <message>
         <source>Scaled</source>
-        <translation type="unfinished"></translation>
+        <translation>Skaalattu</translation>
     </message>
 </context>
 <context>
@@ -185,7 +185,7 @@
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished">Kotinäkymä</translation>
+        <translation>Kotinäkymä</translation>
     </message>
     <message>
         <source>Sent private message</source>
@@ -226,15 +226,15 @@
     </message>
     <message>
         <source>Instance</source>
-        <translation type="unfinished"></translation>
+        <translation>Instanssi</translation>
     </message>
     <message>
         <source>Instance URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Instanssin URL</translation>
     </message>
     <message>
         <source>Credentials</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjautumistiedot</translation>
     </message>
     <message>
         <source>Two-factor authentication</source>
@@ -277,7 +277,7 @@
     </message>
     <message>
         <source>Body</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisältö</translation>
     </message>
     <message>
         <source>Write your post…</source>
@@ -300,7 +300,7 @@
     <name>NsfwOverlay</name>
     <message>
         <source>NSFW</source>
-        <translation type="unfinished"></translation>
+        <translation>NSFW</translation>
     </message>
 </context>
 <context>
@@ -335,7 +335,7 @@
     </message>
     <message>
         <source>In reply to &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastauksena &quot;%1&quot;</translation>
     </message>
     <message>
         <source>No comments yet.</source>
@@ -443,7 +443,7 @@
     </message>
     <message>
         <source>Instance</source>
-        <translation type="unfinished"></translation>
+        <translation>Instanssi</translation>
     </message>
     <message>
         <source>Sign out</source>
@@ -487,34 +487,34 @@
     </message>
     <message>
         <source>Feed</source>
-        <translation type="unfinished"></translation>
+        <translation>Syöte</translation>
     </message>
     <message>
         <source>Full size media</source>
-        <translation type="unfinished"></translation>
+        <translation>Täysikokoinen media</translation>
     </message>
     <message>
         <source>Show post images at full width instead of small thumbnails</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä julkaisujen kuvat täydessä leveydessä pikkukuvien sijaan</translation>
     </message>
     <message>
         <source>No NSFW in feed</source>
-        <translation type="unfinished"></translation>
+        <translation>Kiellä K18-sisältö</translation>
     </message>
     <message>
         <source>Blur thumbnails of posts marked NSFW</source>
-        <translation type="unfinished"></translation>
+        <translation>Sumenna K18-sisältö</translation>
     </message>
 </context>
 <context>
     <name>SubscribedPage</name>
     <message>
         <source>Communities</source>
-        <translation type="unfinished">Yhteisöt</translation>
+        <translation>Yhteisöt</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Päivitä</translation>
+        <translation>Päivitä</translation>
     </message>
     <message>
         <source>No posts</source>
@@ -522,7 +522,7 @@
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation type="unfinished">Päivitä vetämällä alaspäin</translation>
+        <translation>Päivitä vetämällä alaspäin</translation>
     </message>
     <message>
         <source>Upvote</source>
