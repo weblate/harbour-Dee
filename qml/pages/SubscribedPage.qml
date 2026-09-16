@@ -22,6 +22,8 @@ Page {
     }
 
     function updateModeratorStatus(result) {
+        if (!result.moderators)
+            return;
         var myPersonId = api.siteInfo.my_user ? api.siteInfo.my_user.local_user_view.person.id : -1;
         var mods = result.moderators || [];
         isCommunityModerator = false;
