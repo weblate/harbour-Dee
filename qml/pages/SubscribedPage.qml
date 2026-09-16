@@ -84,7 +84,6 @@ Page {
 
         anchors.fill: parent
         model: posts
-        spacing: 0
         onAtYEndChanged: {
             if (atYEnd && !api.busy && listView.count > 0)
                 api.loadMorePosts();
