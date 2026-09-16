@@ -195,6 +195,8 @@ Page {
         delegate: ListItem {
             id: delegate
 
+            width: ListView.view.width
+
             property var post: postData.post
             property var community: postData.community || {}
             property var counts: postData.counts || {}
