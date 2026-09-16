@@ -151,7 +151,13 @@ Page {
             MenuItem {
                 text: qsTr("Home")
                 visible: communityId > 0
-                onClicked: pageStack.animatorPush(Qt.resolvedUrl("SubscribedPage.qml"))
+                onClicked: {
+                    var home = pageStack.find(function (p) {
+                        return p.communityId === 0;
+                    });
+                    if (home && home !== page)
+                        pageStack.pop(home);
+                }
             }
 
             MenuItem {
