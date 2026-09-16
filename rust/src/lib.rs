@@ -19,7 +19,7 @@ use lemmy_client::lemmy_api_common::{
         MarkPersonMentionAsRead,
     },
     post::{CreatePost, CreatePostLike, GetPost, GetPosts},
-    private_message::{GetPrivateMessages, MarkPrivateMessageAsRead},
+    private_message::{CreatePrivateMessage, GetPrivateMessages, MarkPrivateMessageAsRead},
     site::Search,
 };
 use lemmy_client::{ClientOptions, LemmyClient};
@@ -408,7 +408,7 @@ pub unsafe extern "C" fn lemmy_mark_notifications_read(
             "private_message_id",
             mark_private_message_as_read
         ),
-        _ => result_to_c(runtime().block_on(h.client.mark_all_notifications_as_read(()))),
+        _ => to_c_string(r#"{"error":"unsupported notification type"}"#),
     }
 }
 
@@ -563,6 +563,25 @@ pub unsafe extern "C" fn lemmy_create_comment(
     json_params: *const c_char,
 ) -> *mut c_char {
     api_call!(handle, json_params, CreateComment, create_comment)
+}
+
+// ---------------------------------------------------------------------------
+// Private messages
+// ---------------------------------------------------------------------------
+
+/// Create and send a private message. `json_params` is a JSON-serialised
+/// `CreatePrivateMessage`.
+#[no_mangle]
+pub unsafe extern "C" fn lemmy_create_private_message(
+    handle: *mut LemmyClientHandle,
+    json_params: *const c_char,
+) -> *mut c_char {
+    api_call!(
+        handle,
+        json_params,
+        CreatePrivateMessage,
+        create_private_message
+    )
 }
 
 // ---------------------------------------------------------------------------

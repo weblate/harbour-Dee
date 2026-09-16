@@ -132,6 +132,11 @@ void LemmyWorker::doCreateComment(const QString &jsonParams) {
       callRust(m_handle, lemmy_create_comment, jsonParams));
 }
 
+void LemmyWorker::doCreatePrivateMessage(const QString &jsonParams) {
+  emit createPrivateMessageFinished(
+      callRust(m_handle, lemmy_create_private_message, jsonParams));
+}
+
 void LemmyWorker::doListCommunities(const QString &jsonParams) {
   emit listCommunitiesFinished(
       callRust(m_handle, lemmy_list_communities, jsonParams));
@@ -272,6 +277,8 @@ LemmyAPI::LemmyAPI(QObject *parent)
           &LemmyAPI::onLikeCommentFinished);
   connect(m_worker, &LemmyWorker::createCommentFinished, this,
           &LemmyAPI::onCreateCommentFinished);
+  connect(m_worker, &LemmyWorker::createPrivateMessageFinished, this,
+          &LemmyAPI::onCreatePrivateMessageFinished);
   connect(m_worker, &LemmyWorker::listCommunitiesFinished, this,
           &LemmyAPI::onListCommunitiesFinished);
   connect(m_worker, &LemmyWorker::getCommunityFinished, this,
@@ -666,6 +673,16 @@ void LemmyAPI::createComment(int postId, const QString &content, int parentId) {
                             Q_ARG(QString, params));
 }
 
+void LemmyAPI::sendPrivateMessage(int recipientId, const QString &content) {
+  setBusy(true);
+  QJsonObject obj;
+  obj["recipient_id"] = recipientId;
+  obj["content"] = content;
+  QString params = QJsonDocument(obj).toJson(QJsonDocument::Compact);
+  QMetaObject::invokeMethod(m_worker, "doCreatePrivateMessage",
+                            Qt::QueuedConnection, Q_ARG(QString, params));
+}
+
 void LemmyAPI::listCommunities(const QString &jsonParams) {
   setBusy(true);
   m_communitiesPage = 1;
@@ -797,6 +814,7 @@ void LemmyAPI::onListNotificationsFinished(const QString &json) {
                                                   .toInt() == m_myPersonId;
     if (ownContent)
       n.insert(QStringLiteral("unread"), false);
+    n.insert(QStringLiteral("own"), ownContent);
     m_notifications.append(n.toVariantMap());
     if (n.value(QStringLiteral("unread")).toBool())
       newUnread++;
@@ -1016,6 +1034,19 @@ void LemmyAPI::onLikeCommentFinished(const QString &json) {
 
 void LemmyAPI::onCreateCommentFinished(const QString &json) {
   handleSimpleResponse(json, QStringLiteral("createComment"));
+}
+
+void LemmyAPI::onCreatePrivateMessageFinished(const QString &json) {
+  QJsonObject obj = parseJson(json);
+  if (obj.contains(QStringLiteral("error"))) {
+    setError(obj[QStringLiteral("error")].toString());
+    setBusy(false);
+    emit requestFailed(QStringLiteral("sendPrivateMessage"), m_error);
+    return;
+  }
+  setBusy(false);
+  emit requestFinished(QStringLiteral("sendPrivateMessage"), obj);
+  listNotifications();
 }
 
 void LemmyAPI::onListCommunitiesFinished(const QString &json) {

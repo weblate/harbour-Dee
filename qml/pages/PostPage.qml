@@ -490,6 +490,9 @@ Page {
         onRequestFinished: {
             if (method === "likePost" || method === "getPost") {
                 Utils.applyPostViewResult(result, page, appWindow);
+                var pv = result.post_view || {};
+                page.postAuthor = (pv.creator || {}).actor_id || "";
+                page.postDate = (pv.post || {}).published || page.postDate;
             } else if (method === "likeComment") {
                 Utils.applyCommentViewResult(result, api);
             } else if (method === "createComment") {

@@ -14,11 +14,6 @@ Page {
             api.listNotifications();
     }
 
-    Connections {
-        target: api
-        onNewNotificationsReceived: {}
-    }
-
     SilicaListView {
         id: listView
 
@@ -68,11 +63,19 @@ Page {
         VerticalScrollDecorator {}
 
         delegate: ListItem {
-            id: delegate
+            id: item
 
             property var notif: modelData
             property bool isUnread: notif.unread === true
             property string notifType: notif.type || ""
+            property var creator: notif.creator || {}
+            property var recipient: notif.recipient || {}
+            property bool ownPrivate: notifType === "PrivateMessage" && notif.own === true
+            property string author: {
+                if (ownPrivate)
+                    return recipient.actor_id || "";
+                return creator.actor_id || "";
+            }
 
             contentHeight: contentCol.height + 2 * Theme.paddingMedium
             onClicked: {
@@ -81,7 +84,6 @@ Page {
                 if (notifType === "CommentReply" || notifType === "CommentMention" || notifType === "PostMention") {
                     var post = notif.post || {};
                     var community = notif.community || {};
-                    var creator = notif.creator || {};
                     pageStack.animatorPush(Qt.resolvedUrl("PostPage.qml"), {
                         "api": api,
                         "community": community.name || "",
@@ -89,12 +91,21 @@ Page {
                         "postTitle": post.name || "",
                         "postBody": post.body || "",
                         "postUrl": post.url || "",
-                        "postAuthor": creator.actor_id || "",
                         "postScore": 0,
                         "postDate": post.published || "",
                         "postComments": 0,
                         "postMyVote": 0,
                         "postLocked": post.locked || false
+                    });
+                } else if (notifType === "PrivateMessage") {
+                    var other = ownPrivate ? (notif.recipient || {}) : (notif.creator || {});
+                    pageStack.animatorPush(Qt.resolvedUrl("PrivateMessagePage.qml"), {
+                        "api": api,
+                        "content": (notif.private_message || {}).content || "",
+                        "otherActor": other.actor_id || "",
+                        "recipientId": other.id || 0,
+                        "own": ownPrivate,
+                        "published": notif.published || ""
                     });
                 }
             }
@@ -116,6 +127,7 @@ Page {
                 id: contentCol
 
                 x: Theme.horizontalPageMargin
+                y: Theme.paddingMedium
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 spacing: Theme.paddingSmall
 
@@ -129,13 +141,13 @@ Page {
                         case "CommentMention":
                             return qsTr("You were mentioned");
                         case "PrivateMessage":
-                            return qsTr("Private message");
+                            return ownPrivate ? qsTr("Sent private message") : qsTr("Private message");
                         default:
-                            return notifType || qsTr("Notification");
+                            return qsTr("Notification");
                         }
                     }
                     font.pixelSize: Theme.fontSizeSmall
-                    color: isUnread ? (delegate.highlighted ? Theme.highlightColor : Theme.primaryColor) : Theme.secondaryColor
+                    color: isUnread ? (item.highlighted ? Theme.highlightColor : Theme.primaryColor) : Theme.secondaryColor
                 }
 
                 Label {
@@ -150,7 +162,7 @@ Page {
                         return "";
                     }
                     font.pixelSize: Theme.fontSizeExtraSmall
-                    color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
+                    color: item.highlighted ? Theme.highlightColor : Theme.secondaryColor
                     wrapMode: Text.Wrap
                     maximumLineCount: 3
                     elide: Text.ElideRight
@@ -162,23 +174,23 @@ Page {
                     spacing: Theme.paddingSmall
 
                     Label {
-                        text: Utils.formatAuthor((notif.creator || {}).actor_id || "")
+                        text: Utils.formatAuthor(item.author)
                         font.pixelSize: Theme.fontSizeExtraSmall
-                        color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryHighlightColor
+                        color: item.highlighted ? Theme.highlightColor : Theme.secondaryHighlightColor
                         visible: text.length > 0
                     }
 
                     Label {
                         text: "·"
                         font.pixelSize: Theme.fontSizeExtraSmall
-                        color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
-                        visible: Utils.formatAuthor((notif.creator || {}).actor_id || "").length > 0
+                        color: item.highlighted ? Theme.highlightColor : Theme.secondaryColor
+                        visible: Utils.formatAuthor(item.author).length > 0
                     }
 
                     Label {
                         text: notif.published ? Format.formatDate(notif.published, Formatter.DurationElapsed) : ""
                         font.pixelSize: Theme.fontSizeExtraSmall
-                        color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
+                        color: item.highlighted ? Theme.highlightColor : Theme.secondaryColor
                     }
                 }
             }

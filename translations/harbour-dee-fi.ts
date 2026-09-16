@@ -187,6 +187,10 @@
         <source>Home</source>
         <translation type="unfinished">Kotinäkymä</translation>
     </message>
+    <message>
+        <source>Sent private message</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LemmyAPI</name>
@@ -363,6 +367,37 @@
     <message>
         <source>Share url</source>
         <translation>Jaa url</translation>
+    </message>
+</context>
+<context>
+    <name>PrivateMessagePage</name>
+    <message>
+        <source>Sent private message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Private message</source>
+        <translation type="unfinished">Yksityisviesti</translation>
+    </message>
+    <message>
+        <source>To %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>From %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Write a reply…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sending…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

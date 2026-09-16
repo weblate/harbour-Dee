@@ -31,6 +31,7 @@ DISTFILES += qml/Dee.qml \
     qml/pages/NewPostPage.qml \
     qml/pages/PostPage.qml \
     qml/pages/PostWebView.qml \
+    qml/pages/PrivateMessagePage.qml \
     qml/pages/ReplyPage.qml \
     qml/pages/SettingsPage.qml \
     qml/pages/SubscribedPage.qml \
