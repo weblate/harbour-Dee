@@ -300,8 +300,10 @@ LemmyAPI::LemmyAPI(QObject *parent)
   if (m_loggedIn && m_backgroundCheckEnabled)
     m_notificationTimer->start(m_checkIntervalMinutes * 60 * 1000);
 
-  if (m_loggedIn)
+  if (m_loggedIn) {
     checkUnreadCount();
+    getSite();
+  }
 }
 
 LemmyAPI::~LemmyAPI() {
@@ -787,13 +789,21 @@ void LemmyAPI::onListNotificationsFinished(const QString &json) {
   int maxId = m_lastSeenNotificationId;
   for (const QJsonValue &v : arr) {
     QJsonObject n = v.toObject();
+    // Content we authored ourselves (e.g. a private message sent from another
+    // device) is not a notification: keep it in the list but never unread.
+    bool ownContent = m_myPersonId > 0 && n.value(QStringLiteral("creator"))
+                                                  .toObject()
+                                                  .value(QStringLiteral("id"))
+                                                  .toInt() == m_myPersonId;
+    if (ownContent)
+      n.insert(QStringLiteral("unread"), false);
     m_notifications.append(n.toVariantMap());
-    if (n.value("unread").toBool())
+    if (n.value(QStringLiteral("unread")).toBool())
       newUnread++;
-    int nid = n.value("id").toInt();
+    int nid = n.value(QStringLiteral("id")).toInt();
     if (nid > maxId)
       maxId = nid;
-    if (nid > m_lastSeenNotificationId)
+    if (!ownContent && nid > m_lastSeenNotificationId)
       newSinceLastCheck++;
   }
   bool hasNew = newSinceLastCheck > 0 && m_lastSeenNotificationId >= 0;
@@ -871,6 +881,7 @@ void LemmyAPI::onLoginFinished(const QString &json) {
       m_notificationTimer->start(m_checkIntervalMinutes * 60 * 1000);
 
     checkUnreadCount();
+    getSite();
   } else {
     setError(tr("Login succeeded but no token received"));
     setBusy(false);
@@ -896,6 +907,7 @@ void LemmyAPI::onLogoutFinished(const QString &json) {
   m_notifications.clear();
   m_unreadCount = 0;
   m_serverUnreadCount = -1;
+  m_myPersonId = -1;
   emit notificationsChanged();
   emit unreadCountChanged();
 
@@ -919,6 +931,16 @@ void LemmyAPI::onGetSiteFinished(const QString &json) {
     return;
   }
   m_siteInfo = obj;
+  int personId = obj.value(QStringLiteral("my_user"))
+                     .toObject()
+                     .value(QStringLiteral("local_user_view"))
+                     .toObject()
+                     .value(QStringLiteral("person"))
+                     .toObject()
+                     .value(QStringLiteral("id"))
+                     .toInt();
+  if (personId > 0)
+    m_myPersonId = personId;
   emit siteInfoChanged();
   setBusy(false);
   emit requestFinished(QStringLiteral("getSite"), obj);

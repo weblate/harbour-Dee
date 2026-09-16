@@ -252,6 +252,7 @@ private:
   QJsonArray m_communities;
   QVariantList m_comments;
   QJsonObject m_siteInfo;
+  int m_myPersonId = -1;
   QJsonArray m_allCommentItems; // Accumulates raw comment data for pagination
   int m_postsPage;
   bool m_loadingMore;
