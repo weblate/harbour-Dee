@@ -5,7 +5,7 @@ Image {
     id: thumbnail
 
     property url imageUrl
-    property bool enabled: true
+    property bool interactive: true
 
     width: Theme.iconSizeLarge
     height: Theme.iconSizeLarge
@@ -31,7 +31,7 @@ Image {
 
     MouseArea {
         anchors.fill: parent
-        enabled: thumbnail.enabled && !!imageUrl
+        enabled: thumbnail.interactive && !!imageUrl
         onClicked: thumbnail.clicked()
     }
 
