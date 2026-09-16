@@ -55,6 +55,7 @@ Page {
     allowedOrientations: Orientation.All
     onStatusChanged: {
         if (status === PageStatus.Active) {
+            api.setPostsModel(posts);
             appWindow.postTitle = "";
             appWindow.postScore = 0;
             appWindow.postComments = 0;

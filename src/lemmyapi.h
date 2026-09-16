@@ -6,6 +6,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QObject>
+#include <QPointer>
 #include <QSettings>
 #include <QString>
 #include <QThread>
@@ -247,7 +248,7 @@ private:
   QString m_commentSort;
 
   // Data caches
-  PostsModel *m_posts;
+  QPointer<PostsModel> m_posts;
   QJsonArray m_communities;
   QVariantList m_comments;
   QJsonObject m_siteInfo;

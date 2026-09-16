@@ -183,7 +183,7 @@ void LemmyWorker::doUnreadCount() {
 // ===================================================================
 
 LemmyAPI::LemmyAPI(QObject *parent)
-    : QObject(parent), m_loggedIn(false), m_busy(false), m_posts(0),
+    : QObject(parent), m_loggedIn(false), m_busy(false), m_posts(nullptr),
       m_postsPage(1), m_loadingMore(false), m_communitiesPage(1),
       m_loadingMoreCommunities(false), m_commentsPage(1),
       m_loadingMoreComments(false), m_unreadCount(0), m_serverUnreadCount(-1),
