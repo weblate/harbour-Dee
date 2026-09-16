@@ -1,3 +1,13 @@
+* Wed Sep 16 2026 Andrea Scarpino <andrea@scarpino.dev> 0.0.12-1
+- Add Scaled sort option (thanks @sznowicki).
+- Always show the communities you've subscribed to.
+- Option to cover NSFW thumbnails (thanks @sznowicki).
+- Option to show full size media (thanks @sznowicki).
+- Center post status icon against the title.
+- Do not mark own private messages as read.
+- Fixes about memory handling.
+- Translations update.
+
 * Wed Aug 26 2026 Andrea Scarpino <andrea@scarpino.dev> 0.0.11-1
 - Allow to collapse threads.
 - Show a separator between comments and likes in the threads view.
